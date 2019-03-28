@@ -27,6 +27,15 @@ namespace Homework.Models
             _works[item.Key] = item;
         }
 
+        public void Add(string plan, string status)
+        {
+            WorkItem item = new WorkItem();
+            item.Plan = plan;
+            item.Status = status;
+            item.Key = Guid.NewGuid().ToString();
+            _works[item.Key] = item;
+        }
+
         public WorkItem Find(string key)
         {
             WorkItem item;

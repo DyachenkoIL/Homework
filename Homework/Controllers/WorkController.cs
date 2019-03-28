@@ -8,7 +8,6 @@ namespace Homework.Controllers
     [Route("api/work")]
     public class WorkController : Controller
     {
-
         public WorkController(IWorkRepository workItems)
         {
             WorkItems = workItems;
@@ -36,7 +35,7 @@ namespace Homework.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] WorkItem item)
+        public IActionResult Create(WorkItem item)
         {
             RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
             if (item == null)
@@ -46,6 +45,13 @@ namespace Homework.Controllers
             WorkItems.Add(item);
             return CreatedAtRoute("GetWork", new { id = item.Key }, item);
         }
+        /*[HttpPost]
+        public IActionResult Create(string plan, string status)
+        {
+            RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
+            WorkItems.Add(plan,status);
+            return View("~/Views/Home/Index.cshtml");
+        }*/
 
         [HttpPut("{id}")]
         public IActionResult Update(string id, [FromBody] WorkItem item)

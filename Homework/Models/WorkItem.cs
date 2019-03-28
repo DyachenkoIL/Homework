@@ -9,6 +9,6 @@ namespace Homework.Models
     {
         public string Key { get; set; }
         public string Plan { get; set; }
-        public bool Success { get; set; }
+        public string Status { get; set; }
     }
 }
