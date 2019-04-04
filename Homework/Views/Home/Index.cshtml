@@ -2,23 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<p>
-    Description:<br />
-    The POST method sends 2 values (work plan and its status).<br />
-    An "item" is created on the server.<br />
-    GET method returns all existing "item" values.<br />
-    When starting work, one starting "item" is automatically generated (for convenient checking of requests that require the existence of an item).<br />
-    The log is also implemented for GET with ID (GetById method), DELETE  (Delete method), PUT and PATCH (Update method).<br />
-    All methods are on the same path: (localhost)/api/work<br />
-    When a method needs to use a key, it simply needs to be written at the end. For example, an object with the key 90602f50-f8f9-472c-adab-982f7eb2c583 was created at the start.<br />
-    Then, in order to remove it, select Postman Delete and call it on the path (localhost)/api/work/90602f50-f8f9-472c-adab-982f7eb2c583<br /><br />
-
-</p>
 <div>
-    <form method="post" action="~/api/work" enctype="application/x-www-form-urlencoded">
+    <p>Type title and status of new query and click 'Create' => create new query</p>
+    <form method="post" action="~/api/work/Create">
         <table>
             <tr>
-                <td><p>Plan :</p></td>
+                <td><p>Todo :</p></td>
                 <td><input type="text" name="plan" /> </td>
             </tr>
             <tr>
@@ -26,17 +15,56 @@
                 <td><input type="text" name="status" /> </td>
             </tr>
             <tr>
-                <td><input type="submit" value="Post (create)" /> </td>
+                <td><input type="submit" value="Create" /> </td>
                 <td></td>
             </tr>
         </table>
     </form>
 </div>
 <div>
-    <form method="get" action="~/api/work">
+    <p>Type existing id from list to first field and in other fields will write new data when you click 'Update' => update query</p>
+    <form form method="put" action="~/api/work/Update">
         <table>
             <tr>
-                <td><input type="submit" value="Get (View all)" /> </td>
+                <td><p>Key :</p></td>
+                <td><input type="text" name="key" /> </td>
+            </tr>
+            <tr>
+                <td><p>Todo :</p></td>
+                <td><input type="text" name="plan" /> </td>
+            </tr>
+            <tr>
+                <td><p>Status :</p></td>
+                <td><input type="text" name="status" /> </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Update" /> </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <p>Type existing id from list and click 'Delete' => delete query</p>
+    <form form method="delete" action="~/api/work/Delete">
+        <table>
+            <tr>
+                <td><p>Key :</p></td>
+                <td><input type="text" name="key" /> </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Delete" /> </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <p>Click 'Get All' => see todo list</p>
+    <form method="get" action="~/api/work/GetAll">
+        <table>
+            <tr>
+                <td><input type="submit" value="Get All" /> </td>
                 <td></td>
             </tr>
         </table>

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Homework.Controllers
 {
-    [Route("api/work")]
     public class WorkController : Controller
     {
         public WorkController(IWorkRepository workItems)
@@ -14,26 +13,9 @@ namespace Homework.Controllers
         }
 
         public IWorkRepository WorkItems { get; set; }
-
-
-        public IEnumerable<WorkItem> GetAll()
-        {
-            RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[]{Request.Host, RouteData.Values["controller"],RouteData.Values["action"]}));
-            return WorkItems.GetAll();
-        }
-
-        [HttpGet("{id}", Name = "GetWork")]
-        public IActionResult GetById(string id)
-        {
-            RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
-            var item = WorkItems.Find(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
-        }
-
+        
+        [Route("~/api/work/Create",
+            Name = "create")]
         [HttpPost]
         public IActionResult Create(WorkItem item)
         {
@@ -43,26 +25,21 @@ namespace Homework.Controllers
                 return BadRequest();
             }
             WorkItems.Add(item);
-            return CreatedAtRoute("GetWork", new { id = item.Key }, item);
+            return new NoContentResult();
         }
-        /*[HttpPost]
-        public IActionResult Create(string plan, string status)
-        {
-            RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
-            WorkItems.Add(plan,status);
-            return View("~/Views/Home/Index.cshtml");
-        }*/
 
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody] WorkItem item)
+        [Route("~/api/work/Update",
+            Name = "update")]
+        public IActionResult Update(string key, WorkItem item)
         {
+            Request.Method = "PUT";
             RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
-            if (item == null || item.Key != id)
+            if (item == null || item.Key != key)
             {
                 return BadRequest();
             }
 
-            var work = WorkItems.Find(id);
+            var work = WorkItems.Find(key);
             if (work == null)
             {
                 return NotFound();
@@ -71,7 +48,7 @@ namespace Homework.Controllers
             WorkItems.Update(item);
             return new NoContentResult();
         }
-
+        /*
         [HttpPatch("{id}")]
         public IActionResult Update([FromBody] WorkItem item, string id)
         {
@@ -91,20 +68,30 @@ namespace Homework.Controllers
 
             WorkItems.Update(item);
             return new NoContentResult();
-        }
+        }*/
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        [Route("~/api/work/Delete",
+            Name = "delete")]
+        public IActionResult Delete(string key)
         {
+            Request.Method = "DELETE";
             RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[] { Request.Host, RouteData.Values["controller"], RouteData.Values["action"] }));
-            var work = WorkItems.Find(id);
+            var work = WorkItems.Find(key);
             if (work == null)
             {
                 return NotFound();
             }
 
-            WorkItems.Remove(id);
+            WorkItems.Remove(key);
             return new NoContentResult();
+        }
+
+        [Route("~/api/work/GetAll",
+            Name = "getall")]
+        public IEnumerable<WorkItem> GetAll()
+        {
+            RequestLoger.DoLog(Request.Method, HttpContext.Connection.LocalIpAddress.ToString(), string.Join("/", new[]{Request.Host, RouteData.Values["controller"],RouteData.Values["action"]}));
+            return WorkItems.GetAll();
         }
     }
 }

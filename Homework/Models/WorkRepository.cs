@@ -11,6 +11,7 @@ namespace Homework.Models
         private static ConcurrentDictionary<string, WorkItem> _works =
               new ConcurrentDictionary<string, WorkItem>();
 
+        public Random random = new Random();
         public WorkRepository()
         {
             Add(new WorkItem { Plan = "First item" });
@@ -23,7 +24,7 @@ namespace Homework.Models
 
         public void Add(WorkItem item)
         {
-            item.Key = Guid.NewGuid().ToString();
+            item.Key = random.Next(100, 1000).ToString();
             _works[item.Key] = item;
         }
 
